@@ -22,6 +22,6 @@ WITH
 SELECT
       s.*
     , ROW_NUMBER() OVER(PARTITION BY s.heap_user_id ORDER BY s.heap_session_start_time) AS heap_session_sequence_num
-    , {{ gen_defined_channel_attribution('s.heap_session_utm_source', 's.heap_session_utm_medium', 's.heap_session_referrer', 's.heap_session_landing_page_query', 'chubbies') }} as heap_defined_channel_attribution
+    , {{ gen_defined_channel_attribution('s.heap_session_utm_source', 's.heap_session_utm_medium', 's.heap_session_referrer', 's.heap_session_landing_page_query') }} as heap_defined_channel_attribution
 
 FROM sessions_deduped s
