@@ -16,4 +16,4 @@ SELECT
 , {{check_funnel_position('e.heap_event_name')}} as heap_event_funnel_position
 , e.heap_event_name IN {{ gen_conversion_event_list() }} as heap_is_conversion_event
 
-FROM {{ ref('src_heap_events_eph') }} e
+FROM {{ ref('src_heap_events_all_eph') }} e

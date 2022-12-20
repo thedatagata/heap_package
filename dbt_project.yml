@@ -26,8 +26,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 vars:
   heap_snowflake:
-    funnel_events = ['add_to_cart', 'checkout_step_viewed', 'order_submitted']
-    conversion_events = ['account_created', 'order_submitted']
+    funnel_events: ['add_to_cart', 'checkout_step_viewed', 'order_submitted']
+    conversion_events: ['account_created', 'order_submitted']
 
 models:
   heap_snowflake:

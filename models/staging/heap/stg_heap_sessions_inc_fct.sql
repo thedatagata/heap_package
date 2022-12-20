@@ -13,7 +13,7 @@ WITH
           SELECT
               e.heap_user_id 
             , e.heap_session_id 
-            , {{ dbt_utils.pivot('heap_event_funnel_position', dbt_utils.get_column_values(ref('stg_heap_events_fct'),'heap_event_funnel_position'), prefix='funnel_position_'}}
+            , {{ dbt_utils.pivot('heap_event_funnel_position', dbt_utils.get_column_values(ref('stg_heap_events_all_inc_fct'),'heap_event_funnel_position'), prefix='funnel_position_'}}
             , SUM(CASE WHEN e.heap_is_conversion_event THEN 1 ELSE 0 END) as heap_session_conversion_cnt
           -- we only want to update users who have had activity since the last run 
           FROM {{ ref('stg_heap_events_all_inc_fct') }} e 
