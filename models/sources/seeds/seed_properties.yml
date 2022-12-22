@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: utm_channel_mapping
+    config:
+      enabled: false 
+      columns: 
+        - name: attribution_utm_source
+        - name: attribution_utm_medium 
+        - name: attribution_referrer 
+        - name: attribution_landing_page_query

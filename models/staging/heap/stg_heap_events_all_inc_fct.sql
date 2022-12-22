@@ -13,7 +13,9 @@ SELECT
 , e.heap_session_event_sequence
 , e.heap_defined_prop_channel_attribution
 , e.heap_event_prop_logged_in
+-- this checks each heap_event_name against the variable funnel_events defined in the dbt_project yml file and returns the index position within that list if there is a match
 , {{check_funnel_position('e.heap_event_name')}} as heap_event_funnel_position
-, e.heap_event_name IN {{ gen_conversion_event_list() }} as heap_is_conversion_event
+-- flag each heap_event_name that is found within the conversion_events list as defined in the dbt_project yml file 
+, e.heap_event_name IN {{ gen_conversion_events_list() }} as heap_is_conversion_event
 
 FROM {{ ref('src_heap_events_all_eph') }} e

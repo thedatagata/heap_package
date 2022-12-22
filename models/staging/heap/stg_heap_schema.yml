@@ -1,0 +1,118 @@
+version: 2 
+
+models: 
+  - name: stg_heap_events_all_fct
+    description: fact table where each row maps to an event that was synced to snowflake from Heap via Heap Connect 
+    columns: 
+      - name: heap_event_id
+        description: the unique id generated for every event 
+        tests: 
+          - unique
+      - name: heap_user_id
+        description: the unique id generated for every user
+      - name: heap_session_id
+        description: the unique id generated for every session 
+      - name: heap_event_name
+        description: the name of the synced event
+      - name: heap_event_time
+        description: the timestamp signifying when each event occurred 
+      - name: heap_session_event_sequence
+        description: the order in which the event occurred within a session for every user  
+      - name: heap_event_funnel_position
+        description: if the event name matches a string within the funnel_events variable found in the dbt_project yml file, the index value for that string within that list is returned 
+      - name: heap_event_is_conversion
+        description: flags whether or not the event name matches a string provided within the conversion events variable
+
+  - name: stg_heap_pageview_sessions_fct
+    description: fact table containing information about each pageview captured by Heap as well as some custom sessionization sprinkled in
+    columns: 
+      - name: heap_pageview_id
+        description: the unique id generated for each pageview
+        tests: 
+          - unique
+      - name: heap_user_id
+        description: the unique id generated for each user 
+      - name: heap_session_id
+        description: the unique id generated for each session 
+      - name: heap_pageview_time
+        description: the timestamp of each pageview
+      - name: heap_pageview_domain
+        description: the domain component of the url that points to the page that was viewed
+      - name: heap_pageview_path
+        description: the path component of the url that points to the page that was viewed
+      - name: heap_pageview_query
+        description: the query component of the url that points to the page that was viewed
+      - name: heap_pageview_hash
+        description: the hash component of the url that points to the page that was viewed
+      - name: heap_pageview_title
+        description: the value of the html title tag
+      - name: heap_pageview_previous_page
+        description: the url of the page the user was previously on 
+      - name: heap_pageview_session_id 
+        description: the unique id of the user concatenated with the index number of the session generated from custom sessionization logic 
+      - name: heap_pageview_session_index
+        description: a sequential number that flags the beginning of a new session based on the previous pageview being more than 30 minutes away 
+      - name: heap_pageview_session_sequence_number
+        description: the order in which each pageview occurred within a session defined by custom sessionization logic 
+      - name: heap_pageview_session_start_time
+        description: the time of the first pageview for each user and session index number
+      - name: heap_pageview_session_end_time
+        description: the time of the last pageview for each user and session index number
+      - name: heap_pageview_session_first_pageview_id
+        description:  the heap_pageview_id of the first pageview for each user and session index number
+      - name: heap_pageview_session_last_pageview_id
+        description: the heap_pageview_id of the last pageview for each user and session index number
+      - name: heap_pageview_session_start_epoch
+        description: the epoch time of the first pageview for each user and session index number
+      - name: heap_pageview_session_end_epoch
+        description: the epoch time of the last pageview for each user and session index number
+
+  - name: stg_heap_sessions_fct
+    description: fact table with a row for each session captured by Heap
+    columns: 
+      - name: heap_session_id 
+        description: the unique id generated for each session 
+        tests: 
+          - unique
+      - name: heap_user_id
+        description: the unique id generated for each user 
+      - name: heap_session_sequence_num
+        description: the order in which the session occurred for each user
+      - name: heap_session_start_time
+        description: the timestamp of the start of the session
+      - name: heap_session_conversion_lookback_14d
+        description: subtracting 14 days from the session start time
+      - name: heap_session_conversion_lookforward_14d
+        description: adding 14 days to the session start time 
+      - name: heap_session_country
+        description: the country tied to the ip where the page was requested from 
+      - name: heap_session_region
+        description: the region tied to the ip where the page was requested from 
+      - name: heap_session_city
+        description: the city tied to the ip where the page was requested from 
+      - name: heap_session_ip 
+        description: the ip where the page was requested from 
+      - name: heap_session_referrer
+        description: the url the user was on before landing on your domain
+      - name: heap_session_landing_page
+        description: the page the user landed on that initiated the session 
+      - name: heap_session_landing_page_query
+        description: the query parameters of the page the user landed on that initiated the session 
+      - name: heap_session_landing_page_hash
+        description: the hash value of the page the user landed on that initiated the session
+      - name: heap_session_browser
+        description: the browser the user was using when the session was initiated
+      - name: heap_session_utm_source
+        description: the utm_source pulled from the landing page query parameters 
+      - name: heap_session_utm_campaign
+        description: the utm_campaign pulled from the landing page query parameters 
+      - name: heap_session_utm_medium
+        description: the utm_medium pulled from the landing page query parameters 
+      - name: heap_session_utm_term
+        description: the utm_term pulled from the landing page query parameters 
+      - name: heap_session_utm_content
+        description: the utm_content pulled from the landing page query parameters 
+      - name: heap_session_defined_channel_attribution
+        description: the marketing channel that was attributed with driving the session determined by the logic within the gen_defined_channel_attribution macro 
+      - name: heap_session_is_conversion
+        description: flags sessions that contain a conversion event based on the events passed within the conversion_events variable defined in the dbt_project yml file 

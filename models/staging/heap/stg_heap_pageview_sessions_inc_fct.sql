@@ -31,7 +31,7 @@ WITH
     session_start_flag
         AS 
             (
-                -- if the time between pageviews is greater than 30 minutes for web or 5 minutes for mobile, mark that pageview row with a 1
+                -- flag each pageview where the previous pageview occurred more than 30 minutes ago
                 SELECT 
                     pd.* 
                   , CASE 
@@ -45,7 +45,7 @@ WITH
     session_index 
         AS 
             (
-                -- now we can sum up all of those 1s to get the session sequence number 
+                -- for each user, get the rolling total of pageviews where the previous pageview occurred more than 30 minutes ago. this can then be used as a session_index number. 
                 SELECT
                     ss.*
                   , SUM(ss.heap_pageview_session_start_flag) OVER (PARTITION BY ss.heap_user_id ORDER BY ss.heap_pageview_time) AS heap_pageview_session_index 
@@ -58,17 +58,26 @@ WITH
                 -- for every session sequence number, we want info about the first and last event in that session so that we can join events to sessions based on session start and end timestamps
                 SELECT 
                     si.*
+                    -- determine the order in which each pageview occurred within each session 
                   , ROW_NUMBER() OVER ( PARTITION BY si.heap_user_id, si.heap_pageview_session_index ORDER BY si.heap_pageview_time ) AS heap_pageview_session_sequence_number
+                    -- return the timestamp of the first pageview to occurr within each session
                   , FIRST_VALUE(si.heap_pageview_time) OVER( PARTITION BY si.heap_user_id, si.heap_pageview_session_index ORDER BY si.heap_pageview_time) AS heap_pageview_session_start_time
+                    -- return the timestamp of the last pageview to occurr within each session 
                   , LAST_VALUE(si.heap_pageview_time) OVER (PARTITION BY si.heap_user_id, si.heap_pageview_session_index ORDER BY si.heap_pageview_time) AS heap_pageview_session_end_time
+                    -- return the unique heap_pageview_id of the first pageview to occur within each session 
                   , FIRST_VALUE(si.heap_pageview_id) OVER (PARTITION BY si.heap_user_id, si.heap_pageview_session_index ORDER BY si.heap_pageview_time) AS heap_pageview_session_first_pageview_id
+                    -- return the unique heap_pageview_id of the last pageview to occur within each session 
                   , LAST_VALUE(si.heap_pageview_id) OVER (PARTITION BY si.heap_user_id, si.heap_pageview_session_index ORDER BY si.heap_pageview_time) AS heap_pageview_session_last_pageview_id
+                    -- return the epoch time of the first pageview to occur within each session 
+                    -- this can be used to get to something like avg session duration
                   , FIRST_VALUE(EXTRACT(EPOCH from si.heap_pageview_time)) OVER (PARTITION BY si.heap_user_id, si.heap_pageview_session_index ORDER BY si.heap_pageview_time) AS heap_pageview_session_start_epoch
+                    -- return the epoch time of the first pageview to occur within each session 
+                    -- this can be used to get to something like avg session duration
                   , LAST_VALUE(EXTRACT(EPOCH from si.heap_pageview_time)) OVER (PARTITION BY si.heap_user_id, si.heap_pageview_session_index ORDER BY si.heap_pageview_time) AS heap_pageview_session_end_epoch
                 FROM session_index si 
             )
 
--- update column names and add call to gen_defined_channel_attribution
+
 SELECT 
     s.heap_pageview_id
   , s.heap_user_id
@@ -80,8 +89,9 @@ SELECT
   , s.heap_pageview_hash 
   , s.heap_pageview_title 
   , s.heap_pageview_previous_page 
-  -- create a session_id concatinating user_id and session sequence number 
-  , CONCAT(s.heap_user_id, '_', s.heap_pageview_session_index) heap_pageview_session_id
+    -- create a session_id concatinating user_id and session sequence number 
+    -- https://github.com/dbt-labs/dbt-utils#generate_surrogate_key-source
+  , {{ dbt_utils.generate_surrogate_key(['heap_user_id', 'heap_pageview_session_index'])}} AS heap_pageview_session_id
   , s.heap_pageview_session_index
   , s.heap_pageview_session_start_time
   , s.heap_pageview_session_end_time 
