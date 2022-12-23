@@ -1,4 +1,4 @@
-{% macro gen_defined_channel_attribution(utm_source, utm_medium, referrer, landing_page_query, sb_store_name) %}
+{% macro gen_defined_channel_attribution(utm_source, utm_medium, referrer, landing_page_query, self_referrer) %}
     CASE
         WHEN {{utm_medium}} like '%cpc%' 
           AND {{utm_source}} like 'facebook'
@@ -18,8 +18,8 @@
           AND {{utm_source}} IS NULL 
             THEN 'Organic Search'
 
-        WHEN {{referrer}} like '%{{sb_store_name}}%'
-            THEN '{{sb_store_name}}'
+        WHEN {{referrer}} like '%{{self_referrer}}}%'
+            THEN '{{self_referrer}}'
     
         ELSE 'Unattributed'
 
