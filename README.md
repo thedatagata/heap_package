@@ -17,7 +17,7 @@
 
 > {{
 >    config(
->       unique_key='{unique_id}'
+>       unique_key='replace_me_w_unique_id'
 >  )
 > }}
 
@@ -26,13 +26,15 @@
 - [BigQuery Configurations](https://docs.getdbt.com/reference/resource-configs/bigquery-configs)
 
 > {{ config(
+>
 >   partition_by={
+>
 >      "field":"heap_pageview_time",
 >      "data_type":"timestamp",
 >      "granularity":"day"
 >    },
->      cluster_by = ['{unique_id}'], 
->      unique_key = '{unique_id}'
+>      cluster_by = ['replace_me_w_unique_id'], 
+>      unique_key = 'replace_me_w_unique_id'
 >   ) 
 > }}
 
@@ -44,7 +46,7 @@
 >    config(
 >        sort = 'heap_event_time',
 >        dist = 'heap_event_id',
->        unique_key = 'heap_event_id'
+>        unique_key = 'replace_me_w_unique_id'
 >    )
 > }}
 
