@@ -25,10 +25,8 @@
 
 - [BigQuery Configurations](https://docs.getdbt.com/reference/resource-configs/bigquery-configs)
 
-> {{ config(
->
+> `{{ config(
 >   partition_by={
->
 >      "field":"heap_pageview_time",
 >      "data_type":"timestamp",
 >      "granularity":"day"
@@ -36,7 +34,7 @@
 >      cluster_by = ['replace_me_w_unique_id'], 
 >      unique_key = 'replace_me_w_unique_id'
 >   ) 
-> }}
+> }}`
 
 ### **Redshift** 
 
