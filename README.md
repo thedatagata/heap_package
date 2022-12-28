@@ -14,7 +14,7 @@
 
 ### **stg_heap_events_all_inc_fct** 
 
-This table contains a row for each event synced to Heap. This table automatically includes pageviews but will also include events toggled to sync via Heap Connect in the Heap UI
+*This table contains a row for each event synced to Heap. This table automatically includes pageviews but will also include events toggled to sync via Heap Connect in the Heap UI*
 
 | Column Name     | Description                                        | Source        |
 |-----------------|----------------------------------------------------|---------------|
