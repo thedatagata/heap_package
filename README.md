@@ -1,5 +1,5 @@
 
-## **Heap Package Docs**
+# **Heap Package Docs**
 
 - Why does this package exist
 
@@ -8,50 +8,52 @@
       - baked in incremental logic 
       - provides a source layer for changing column names / data types, applying freshness checks and tests, and documentation describing each table and column
 
-- Warehouse Configs
 
-**Snowflake** 
+## **Warehouse Specific Configs**
 
-[Snowflake Configurations](https://docs.getdbt.com/reference/resource-configs/snowflake-configs)
+### **Snowflake** 
 
-`{{
-    config(
-        unique_key='{unique_id}'
-    )
-}}`
+- [Snowflake Configurations](https://docs.getdbt.com/reference/resource-configs/snowflake-configs)
 
-**Big Query** 
+> {{
+>    config(
+>       unique_key='{unique_id}'
+>  )
+> }}
 
-[BigQuery Configurations](https://docs.getdbt.com/reference/resource-configs/bigquery-configs)
+### **Big Query** 
 
-`{{ config(
-  partition_by={
-    "field":"heap_pageview_time",
-    "data_type":"timestamp",
-    "granularity":"day"
-  },
-  cluster_by = ['{unique_id}'], 
-  unique_key = '{unique_id}'
-) }}`
+- [BigQuery Configurations](https://docs.getdbt.com/reference/resource-configs/bigquery-configs)
 
-**Redshift** 
+> {{ config(
+>   partition_by={
+>      "field":"heap_pageview_time",
+>      "data_type":"timestamp",
+>      "granularity":"day"
+>    },
+>      cluster_by = ['{unique_id}'], 
+>      unique_key = '{unique_id}'
+>   ) 
+> }}
 
-[Redshift Configurations](https://docs.getdbt.com/reference/resource-configs/redshift-configs)
+### **Redshift** 
 
-`{{
-    config(
-        sort = 'heap_event_time',
-        dist = 'heap_event_id',
-        unique_key = 'heap_event_id'
-    )
-}}`
+- [Redshift Configurations](https://docs.getdbt.com/reference/resource-configs/redshift-configs)
+
+> {{
+>    config(
+>        sort = 'heap_event_time',
+>        dist = 'heap_event_id',
+>        unique_key = 'heap_event_id'
+>    )
+> }}
 
 - Incremental Logic
     - each ephemeral model makes a call to the get active users macro. the ephemeral model passes the string that corresponds to the upstream incremental model's timestamp column name.
 
     [Snowflake Incremental Config](https://docs.getdbt.com/reference/resource-configs/snowflake-configs#merge-behavior-incremental-models)
     [BigQuery Incremental Config](https://docs.getdbt.com/reference/resource-configs/bigquery-configs#merge-behavior-incremental-models)
-    [Redshift Optimization](https://docs.getdbt.com/blog/redshift-configurations-dbt-model-optimizations)
+    [Redshift Optimization](https://docs.getdbt.com/reference/resource-configs/redshift-configs#performance-optimizations)
 
 
 - Style Guide
