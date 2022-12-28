@@ -1,12 +1,7 @@
 
 # **Heap Package Docs**
 
-- Why does this package exist
-
-    1. jumpstart to getting started with heap data downstream. the objective of this project is to provide a framework for modeling heap data downstream. 
-    2. this package includes: 
-      - baked in incremental logic 
-      - provides a source layer for changing column names / data types, applying freshness checks and tests, and documentation describing each table and column
+## **Package Description** 
 
 
 ## **Warehouse Specific Configs**
@@ -15,11 +10,13 @@
 
 - [Snowflake Configurations](https://docs.getdbt.com/reference/resource-configs/snowflake-configs)
 
-> {{
->    config(
->       unique_key='replace_me_w_unique_id'
->  )
-> }}
+```
+{{
+  config(
+    unique_key='replace_me_w_unique_id'
+  )
+}}
+```
 
 ### **Big Query** 
 
@@ -42,13 +39,15 @@
 
 - [Redshift Configurations](https://docs.getdbt.com/reference/resource-configs/redshift-configs)
 
-> {{
->    config(
->        sort = 'heap_event_time',
->        dist = 'heap_event_id',
->        unique_key = 'replace_me_w_unique_id'
->    )
-> }}
+```
+{{
+  config(
+      sort = 'heap_event_time',
+      dist = 'heap_event_id',
+      unique_key = 'replace_me_w_unique_id'
+  )
+}}
+```
 
 - Incremental Logic
     - each ephemeral model makes a call to the get active users macro. the ephemeral model passes the string that corresponds to the upstream incremental model's timestamp column name.
