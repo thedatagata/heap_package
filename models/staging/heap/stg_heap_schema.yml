@@ -107,7 +107,7 @@ models:
       - name: heap_session_utm_campaign
         description: the utm_campaign pulled from the landing page query parameters 
       - name: heap_session_utm_medium
-        description: the utm_medium pulled from the landing page query parameters 
+        description: the utm_medium pulled from the landing page query parameters
       - name: heap_session_utm_term
         description: the utm_term pulled from the landing page query parameters 
       - name: heap_session_utm_content
