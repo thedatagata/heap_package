@@ -24,7 +24,7 @@
 | heap_event_time             | The timestamp at which the event occurred                                                                                                                            | Heap                        |
 | heap_session_event_sequence | The order in which the event occurred within the session for the user                                                                                                | src_heap_events_all_eph     |
 | heap_event_funnel_position  | If the event name matches a string within the funnel_events variable found in the dbt_project yml file, the index value for that string within that list is returned | stg_heap_events_all_inc_fct |
-| heap_event_is_conversion    | Flags whether or not the event name matches a string provided within the conversion events variable                                                                  |                             |
+| heap_event_is_conversion    | Flags whether or not the event name matches a string provided within the conversion events variable                                                                  | stg_heap_events_all_inc_fct |
 
 ### **stg_heap_pageview_sessions_inc_fct**
 
