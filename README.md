@@ -144,7 +144,9 @@
 [Heap Docs - Managing Event Syncing](https://help.heap.io/heap-connect/heap-connect-guide/heap-connect-managing-data-syncing/)
 
 > Heap Connect ships with 4 built-in views (users, sessions, all_events, user_migrations). In order to leverage this package to facilitate funnel analysis, you'll need to > sync toggle the event to sync to your warehouse from the Heap Event Definition pane. Once the events have synced, they will appear within the all_events along with a   > view for each unique synced event.
->
+
+<br>
+
 > Now that the events that correspond to your top line funnel have been synced to your warehouse from Heap via Heap Connect, you will want to update the funnel_events    > variable found within the dbt_project yaml file. Make sure that the events are entered into the funnel_events list variable in the appropriate order and that the       > values entered into the funnel_events variable map to the unique event names found within the all_events view. 
 
 ## **Attribution**
