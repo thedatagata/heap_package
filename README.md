@@ -153,5 +153,3 @@
 <br>
 
 > Now that the events that correspond to your top line funnel have been synced to your warehouse from Heap via Heap Connect, you will want to update the funnel_events    > variable found within the dbt_project yaml file. Make sure that the events are entered into the funnel_events list variable in the appropriate order and that the values entered into the funnel_events variable map to the unique event names found within the all_events view. 
-
-## **Attribution**
